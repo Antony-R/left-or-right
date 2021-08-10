@@ -1,0 +1,15 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+     <div class="container">
+        <div class="col-md-8 mx-auto mt-5 red-hat-font">
+            <div class="media">
+                <img src="{{user_profile.image.url}}" class="rounded-circle w-25 p-3 account-img" alt="Profile Image">
+            </div>
+            <ul class="list-group my-4">
+                <li class="list-group-item bg-purple text-white" aria-current="true"><h4>{{user_profile.user.first_name}}</h4><div>{{user_profile.user.username}}</div></li>
+                <li class="list-group-item">{{user_profile.bio}}</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

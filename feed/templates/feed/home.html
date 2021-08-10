@@ -1,0 +1,159 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row my-4 justify-content-center">
+        <div class="col-md-8">
+            <div class="jumbotron">
+                <h1 class="display-4">Hello, {{user.username}}</h1>
+                <p class="lead">Create a post to see whether left wins or right wins! Collaborate and help each other
+                    with your decisions. <i class="far fa-laugh-wink"></i></p>
+                <p class="lead">
+                    <a class="btn btn-info btn-md" href="{% url 'create_post' %}" role="button">Create Post</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% for post in object_list %}
+    <div class="row my-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-purple text-white border-white">
+                    <div class="post-title">{{post.title}}</div>
+                    <div class="text-end date"><i class="far fa-clock"></i> {{post.datetime}}
+                        <div><a href="{% url 'public_profile' post.uname.id %}"><i class="fas fa-link"></i>
+                                {{post.uname}}</a></div>
+                    </div>
+                </div>
+                <div class="card-body d-flex justify-content-between">
+                    <div class="mx-2">
+                        <h5 class="card-title text-purple">{{post.left_title}}</h5>
+                        <p class="card-text">{{post.left_content}}</p>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <form action="{% url 'left_vote_post' post.pk %}" method="POST" class="left-vote-form"
+                            id="{{post.id}}">
+                            {% csrf_token %}
+                            {% if user in post.left_vote.all %}
+                            <button class="btn btn-purple" id="left-vote-btn{{post.id}}" type="submit">Vote for Left</button>
+                            <div id="left-vote-count{{post.id}}"
+                                class="badge bg-purple mx-3">{{post.left_vote.count}}</div>
+                            {% else %}
+                            <button class="btn btn-light" id="left-vote-btn{{post.id}}" type="submit">Vote for Left</button>
+                            <div id="left-vote-count{{post.id}}"
+                                class="badge bg-purple mx-3">{{post.left_vote.count}}</div>
+                            {% endif %}
+
+                        </form>
+                    </div>
+                    <div class="mx-2">
+                        <h5 class="card-title text-purple">{{post.right_title}}</h5>
+                        <p class="card-text">{{post.right_content}}</p>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <form action="{% url 'right_vote_post' post.pk %}" class="right-vote-form" method="POST"
+                            id="{{post.id}}">
+                            {% csrf_token %}
+
+                            {% if user in post.right_vote.all %}
+                            <button class="btn btn-purple" id="right-vote-btn{{post.id}}" type="submit">Vote for Right</button>
+                            <div id="right-vote-count{{post.id}}"
+                                class="badge bg-purple mx-3">{{post.right_vote.count}}</div>
+                            {% else %}
+                            <button class="btn btn-light" id="right-vote-btn{{post.id}}" type="submit">Vote for Right</button>
+                            <div id="right-vote-count{{post.id}}"
+                                class="badge bg-purple mx-3">{{post.right_vote.count}}</div>
+                            {% endif %}
+
+                        </form>
+                    </div>
+                </div>
+                {% if post.uname == user %}
+                <div class="card-footer bg-purple text-end">
+                    <a href="{% url 'update_post' post.id %}" class="btn btn-outline-light mx-1">Update</a>
+                    <a href="{% url 'delete_post' post.id %}" class="btn btn-outline-light mx-1">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.left-vote-form').submit(function (e) {
+            e.preventDefault()
+            const post_id = $(this).attr('id')
+            console.log(post_id)
+            const token = $('input[name=csrfmiddlewaretoken]').val()
+            console.log(token)
+            const url = $(this).attr('action')
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                headers: { 'X-CSRFToken': token },
+                data: {
+                    'post_id': post_id
+                },
+                success: function (response) {
+                    console.log(response)
+                    if (response.is_left_voted === true) {
+                        $(`#left-vote-btn${post_id}`).removeClass('btn-light')
+                        $(`#left-vote-btn${post_id}`).addClass('btn-purple')
+                        $(`#right-vote-btn${post_id}`).removeClass('btn-purple')
+                        $(`#right-vote-btn${post_id}`).addClass('btn-light')
+                    }
+                    else {
+                        $(`#left-vote-btn${post_id}`).removeClass('btn-purple')
+                        $(`#left-vote-btn${post_id}`).addClass('btn-light')
+                    }
+                    left_vote = $(`#left-vote-count${post_id}`).text(response.left_vote_count)
+                    right_vote = $(`#right-vote-count${post_id}`).text(response.right_vote_count)
+                    parseInt(left_vote)
+                    parseInt(right_vote)
+                },
+                error: function (response) {
+                    console.log("Failed", response)
+                }
+            })
+        });
+        $('.right-vote-form').submit(function (e) {
+            e.preventDefault()
+            const post_id = $(this).attr('id')
+            console.log(post_id)
+            const token = $('input[name=csrfmiddlewaretoken]').val()
+            console.log(token)
+            const url = $(this).attr('action')
+
+            $.ajax({
+                method: "POST",
+                url: url,
+                headers: { 'X-CSRFToken': token },
+                data: {
+                    'post_id': post_id
+                },
+                success: function (response) {
+                    console.log(response)
+                    if (response.is_right_voted === true) {
+                        $(`#right-vote-btn${post_id}`).removeClass('btn-light')
+                        $(`#right-vote-btn${post_id}`).addClass('btn-purple')
+                        $(`#left-vote-btn${post_id}`).removeClass('btn-purple')
+                        $(`#left-vote-btn${post_id}`).addClass('btn-light')
+                    }
+                    else {
+                        $(`#right-vote-btn${post_id}`).removeClass('btn-purple')
+                        $(`#right-vote-btn${post_id}`).addClass('btn-light')
+                    }
+                    left_vote = $(`#left-vote-count${post_id}`).text(response.left_vote_count)
+                    right_vote = $(`#right-vote-count${post_id}`).text(response.right_vote_count)
+                    parseInt(left_vote)
+                    parseInt(right_vote)
+                },
+                error: function (response) {
+                    console.log("Failed", response)
+                }
+            })
+        })
+    });
+</script>
+{% endblock %}

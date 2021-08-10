@@ -1,0 +1,16 @@
+{% extends 'feed/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-8 mx-auto mt-5 red-hat-font">
+            <div class="media">
+                <img src="{{user.profile.image.url}}" class="rounded-circle w-25 p-3 account-img" alt="Profile Image">
+            </div>
+            <ul class="list-group my-4">
+                <li class="list-group-item bg-purple text-white" aria-current="true"><h4>{{user.first_name}}</h4><div>{{user.username}}</div></li>
+                <li class="list-group-item">{{user.profile.bio}}</li>
+                <li class="list-group-item"><a href="{% url 'update_profile' %}" class="btn btn-outline-success">Edit</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

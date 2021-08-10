@@ -1,0 +1,95 @@
+.navbar-brand {
+    font-family: 'Notable', sans-serif;
+    font-size: 1.3em;
+    letter-spacing: 3px;
+}
+
+.nav-link {
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.jumbotron {
+    font-family: 'Red Hat Display', sans-serif;
+}
+
+.card {
+    font-family: 'Red Hat Display', sans-serif;
+}
+
+.post-title {
+    font-size: 1.2em;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+}
+
+.date {
+    color: white;
+}
+
+.date a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+}
+
+.bg-purple {
+    background-color: #6e72fc;
+    background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
+}
+
+.text-purple {
+    color: #B71DDE;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.btn-purple {
+    background-color: #6e72fc;
+    background-image: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
+    outline-color: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
+    border-color: linear-gradient(315deg, #6e72fc 0%, #ad1deb 74%);
+    color: white;
+}
+
+.btn-purple:hover {
+    color: white;
+}
+
+.red-hat-font{
+    font-family: 'Red Hat Display', sans-serif;
+}
+
+label{
+    padding: 0.8em 0 0.1em 0;
+}
+
+p{
+    font-size: 1.2em;
+}
+
+h2{
+    font-weight: bolder;
+    text-shadow: 2px 2px red;
+}
+
+@media (max-width: 500px) {
+    .navbar-brand {
+        font-size: 1.2em;
+        letter-spacing: 2px;
+    }
+    .badge{
+        margin-top: 0.7em;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .card-text{
+        font-size: 1em;
+    }
+    .card-title{
+        font-size: 1em;
+    }
+}
