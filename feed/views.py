@@ -22,7 +22,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     
     model = Post
     fields = ['title', 'left_title', 'left_content', 'right_title', 'right_content']
-    success_url = '/'
+    success_url = '/home'
 
     def form_valid(self, form):
         form.instance.uname = self.request.user
@@ -32,7 +32,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView, UserPassesTestMixin):
     
     model = Post
     fields = ['title', 'left_title', 'left_content', 'right_title', 'right_content']
-    success_url = '/'
+    success_url = '/home'
 
     def form_valid(self, form):
         form.instance.uname = self.request.user
@@ -47,7 +47,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView, UserPassesTestMixin):
 class DeletePostView(LoginRequiredMixin, DeleteView, UserPassesTestMixin):
     
     model = Post
-    success_url = '/'
+    success_url = '/home'
 
     def test_func(self):
         post = self.get_object()
