@@ -118,4 +118,6 @@ def about_us(request):
     return render(request, 'feed/about-us.html')
 
 def landing_page(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/home')
     return render(request, 'feed/landing-page.html')
